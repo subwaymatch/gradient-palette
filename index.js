@@ -10,7 +10,7 @@ GradientPalette.hexToRGB = hex => {
   let r, g, b;
 
   // If the hex value begins with a sharp(#) character,
-  // get the other part
+  // get string without the sharp
   if (hex.startsWith("#")) {
     hex = hex.substring(1, hex.length);
   }
@@ -53,7 +53,7 @@ GradientPalette.rgbToHex = rgbObj => {
   g = g.length > 1 ? g : "0" + g;
   b = b.length > 1 ? b : "0" + b;
 
-  return r + g + b;
+  return "#" + r + g + b;
 };
 
 /**
@@ -62,7 +62,7 @@ GradientPalette.rgbToHex = rgbObj => {
  * @param beginRGB Begin RGB
  * @param endRGB End RGB
  * @param numSteps Number of steps
- * @returns {{r: number, g: number, b: number}}
+ * @returns {{r: number, g: number, b: number}} Increment RGB object
  */
 GradientPalette.calculateIncrement = (beginRGB, endRGB, numSteps) => ({
   r: (endRGB.r - beginRGB.r) / (numSteps - 1),
@@ -82,19 +82,27 @@ GradientPalette.getRandomRGB = () => ({
 });
 
 /**
+ * Generate and return a random Hex string
+ *
+ * @returns {string} Random hex color
+ */
+GradientPalette.getRandomHex = () =>
+  GradientPalette.rgbToHex(GradientPalette.getRandomRGB());
+
+/**
  * Calculate color steps in the gradient
  *
  * @param beginRGB Begin RGB
  * @param endRGB End RGB
  * @param numSteps Number of steps
- * @param shouldReturnHexArray Whether the return should be an array of hex value
+ * @param returnHex Whether the return should be an array of hex strings, if false, an array of RGB objects will be returned
  * @returns {Array}
  */
-GradientPalette.calculateSteps = (
+GradientPalette.generate = (
   beginRGB,
   endRGB,
-  numSteps,
-  shouldReturnHexArray = true
+  numSteps = 10,
+  returnHex = true
 ) => {
   // Check and convert hex values to RGB
   beginRGB =
@@ -110,7 +118,7 @@ GradientPalette.calculateSteps = (
     numSteps
   );
 
-  const steps = [];
+  const palette = [];
 
   let r, g, b;
 
@@ -120,8 +128,8 @@ GradientPalette.calculateSteps = (
     g = beginRGB.g + Math.round(i * rgbIncrement.g);
     b = beginRGB.b + Math.round(i * rgbIncrement.b);
 
-    if (shouldReturnHexArray === true) {
-      steps.push(
+    if (returnHex === true) {
+      palette.push(
         GradientPalette.rgbToHex({
           r: r,
           g: g,
@@ -129,7 +137,7 @@ GradientPalette.calculateSteps = (
         })
       );
     } else {
-      steps.push({
+      palette.push({
         r: r,
         g: g,
         b: b
@@ -137,24 +145,7 @@ GradientPalette.calculateSteps = (
     }
   }
 
-  return steps;
-};
-
-/**
- * Get a random gradient steps set
- *
- * @param numSteps
- * @returns {Array}
- */
-GradientPalette.getRandomSteps = numSteps => {
-  // Validity check for number of gradient steps
-  if (numSteps < 1) numSteps = 1;
-
-  return GradientPalette.calculateSteps(
-    GradientPalette.getRandomRGB(),
-    GradientPalette.getRandomRGB(),
-    numSteps
-  );
+  return palette;
 };
 
 module.exports = GradientPalette;
