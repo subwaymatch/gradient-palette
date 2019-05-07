@@ -81,5 +81,5 @@ test("Random RGB", () => {
 });
 
 test("Random Hex String", () => {
-  expect(GradientPalette.getRandomHex()).toMatch(/#\b[0-9A-Fa-f]{6}\b/g);
+  expect(GradientPalette.getRandomHex()).toMatch(/#\b[0-9a-f]{6}\b/g);
 });
