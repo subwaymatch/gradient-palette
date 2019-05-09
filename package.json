@@ -1,6 +1,6 @@
 {
   "name": "gradient-palette",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A simple gradient palette generator in RGB scale. ",
   "main": "index.js",
   "scripts": {
@@ -20,6 +20,6 @@
   },
   "homepage": "https://github.com/subwaymatch/gradient-palette#readme",
   "devDependencies": {
-    "jest": "^24.8.0"
+    "jest": "^24.7.1"
   }
 }
